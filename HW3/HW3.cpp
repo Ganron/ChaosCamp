@@ -64,10 +64,18 @@ int main() {
             Vector3D ray = Vector3D(x, y, -1.0).getNormalized();
 
             //Convert to RGB, treating each coordinate as a color coefficient and taking the abs() when negative
-            //The absolute value will make the image look symmetric.
+            //We transform the coordinate range from [-1;1] to [0;1] because we need positive colour coefficients.
+            ppmFileStream << (int)(((ray.x + 1) / 2.0) * 255) << " ";
+            ppmFileStream << (int)(((ray.y + 1) / 2.0) * 255) << " ";
+            ppmFileStream << (int)(((ray.z + 1) / 2.0) * 255) << "\t";
+
+            // Old code using absolute value
+            /* 
             ppmFileStream << (int)(abs(ray.x) * 255) << " ";
             ppmFileStream << (int)(abs(ray.y) * 255) << " ";
             ppmFileStream << (int)(abs(ray.z) * 255) << "\t";
+            */
+
         }
         ppmFileStream << "\n";
     }
