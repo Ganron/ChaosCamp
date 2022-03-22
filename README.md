@@ -10,3 +10,5 @@ Homework repository associated with the ChaosCamp Ray Tracing course.
 
 ### Homework 4 - Triangle
  - Problem 1: Add a triangle representation to a previous homework project.
+ - Problem 2: Cross product
+ - Problem 3: Find normal vector and area of a triangle
