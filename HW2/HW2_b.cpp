@@ -21,7 +21,7 @@ static const int maxColorComponent = 255;
 
 int main() {
     //Set up output stream
-    std::ofstream ppmFileStream("am_hw2_b.ppm", std::ios::out | std::ios::binary);
+    std::ofstream ppmFileStream("am_hw2_b_edited.ppm", std::ios::out | std::ios::binary);
     ppmFileStream << "P3\n";
     ppmFileStream << imageWidth << " " << imageHeight << "\n";
     ppmFileStream << maxColorComponent << "\n";
@@ -31,14 +31,15 @@ int main() {
         for (int colIdx = 0; colIdx < imageWidth; ++colIdx) {
             // Set coordinate system such that the origin is at the centre of the screen and y-axis points upwards.
             float xNew = colIdx - imageWidth / 2;
-            float yNew = imageHeight/2 - 1 - rowIdx;
+            float yNew = imageHeight / 2 - 1 - rowIdx;
 
             //Convert to polar coordinates
-            float r = sqrt(xNew * xNew + yNew * yNew);
+            float rSquared = xNew * xNew + yNew * yNew;
             float theta = atan2f(yNew, xNew);
 
             //Polar equation of the Quadrifolium: https://en.wikipedia.org/wiki/Quadrifolium
-            if(r<abs(500*cos(2*theta))) ppmFileStream << "255 249 146\t";
+            float RHS = 500 * cos(2 * theta);
+            if (rSquared < RHS*RHS) ppmFileStream << "255 249 146\t";
             else ppmFileStream << "103 138 82\t";
         }
         ppmFileStream << "\n";
@@ -48,3 +49,4 @@ int main() {
 
     return 0;
 }
+

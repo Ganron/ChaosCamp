@@ -103,9 +103,45 @@ bool lemniscate(float t, float& x, float& y) {
     return true;
 }
 
+//Function takes the "framebuffer" (array storing a colour for each of the squares in the grid) which
+//currently has background colours only (assumed!) and draws the lemniscate curve on top.
+void drawLemniscate(ColorRGB * const colorLookup, int numSquaresX, int numSquaresY) {
+    //Take steps along the curve - step size configurable
+    float t = -1.0;
+    float dt = 0.01;
+    while (t < 1.0) {
+        float x = 0.0;
+        float y = 0.0;
+        if (lemniscate(t, x, y)) {
+            //Transform curve from local coordinates to pixel coordinates.
+            x *= (imageWidth - 1) / 2.0;
+            x += imageWidth / 2;
+
+            //Account for both "upper" and "lower" part of the lemniscate.
+            y *= -(imageWidth - 1) / 2.0;
+            int yMirrored = -y;
+
+            y += imageHeight / 2;
+            yMirrored += imageHeight / 2;
+
+            if ((int)x >= 0 && (int)x < imageWidth && (int)y >= 0 && (int)y < imageHeight) {
+                //Set pixels intersecting with the curve to have a red value (fixed hue) with arbitrary brightness
+                //ranging between 80% and 95%.
+                int index = ((int)y / squareSize) * numSquaresX + (int)x / squareSize;
+                int indexMirrored = ((int)yMirrored / squareSize) * numSquaresX + (int)x / squareSize;
+
+                colorLookup[index] = ColorHSV(0, 0.8, 0.01 * (rand() % 16 + 80)).toRGB();
+                colorLookup[indexMirrored] = ColorHSV(0, 0.8, 0.01 * (rand() % 16 + 80)).toRGB();
+            }
+        }
+
+        t += dt;
+    }
+}
+
 int main() {
     //Set up output stream
-    std::ofstream ppmFileStream("am_hw2_a.ppm", std::ios::out | std::ios::binary);
+    std::ofstream ppmFileStream("am_hw2_a_edited.ppm", std::ios::out | std::ios::binary);
     ppmFileStream << "P3\n";
     ppmFileStream << imageWidth << " " << imageHeight << "\n";
     ppmFileStream << maxColorComponent << "\n";
@@ -126,37 +162,8 @@ int main() {
         }
     }
 
-    //Take steps along the curve - step size configurable
-    float t = -1.0;
-    float dt = 0.01;
-    while (t < 1.0) {
-        float x = 0.0;
-        float y = 0.0;
-        if (lemniscate(t, x, y)) {
-            //Transform curve from local coordinates to pixel coordinates.
-            x *= (imageWidth-1)/2.0;
-            x += imageWidth / 2;
-
-            //Account for both "upper" and "lower" part of the lemniscate.
-            y *= -(imageWidth-1)/2.0;
-            int yMirrored = -y;
-
-            y += imageHeight / 2;
-            yMirrored += imageHeight / 2;               
-
-            if ((int)x >= 0 && (int)x < imageWidth && (int)y >= 0 && (int)y < imageHeight) {
-                //Set pixels intersecting with the curve to have a red value (fixed hue) with arbitrary brightness
-                //ranging between 80% and 95%.
-                int index = ((int)y / squareSize) * numSquaresX + (int)x / squareSize;
-                int indexMirrored = ((int)yMirrored / squareSize) * numSquaresX + (int)x / squareSize;
-
-                colorLookup[index] = ColorHSV(0, 0.8, 0.01 * (rand() % 16 + 80)).toRGB();
-                colorLookup[indexMirrored] = ColorHSV(0, 0.8, 0.01 * (rand() % 16 + 80)).toRGB();
-            }
-        }
-
-        t += dt;
-    }
+    //Draw the Lemniscate curve with "reddish" tones on top of the blue background.
+    drawLemniscate(colorLookup, numSquaresX, numSquaresY);
 
     //Draw
     for (int rowIdx = 0; rowIdx < imageHeight; ++rowIdx) {
