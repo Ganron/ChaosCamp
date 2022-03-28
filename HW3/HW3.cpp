@@ -11,6 +11,7 @@
 
 #include <fstream>
 #include <iostream>
+#include <assert.h>
 
 /// Output image resolution
 static const int imageWidth = 1920;
@@ -33,18 +34,27 @@ public:
     float getLength() const { return sqrt(x * x + y * y + z * z); }
 
     //Get a unit vector pointing in the same direction as the current vector
-    Vector3D getNormalized() const {
-        float length = this->getLength();
-        return Vector3D(x / length, y / length, z / length);
+    void normalize() {
+        float len = this->getLength();
+
+        //handle division by zero
+        assert(abs(len) > 0.000001f);
+
+        float coeff = 1/len;
+        x = x * coeff;
+        y = y * coeff;
+        z = z * coeff;
     }
 };
 
 int main() {
     //Set up output stream
-    std::ofstream ppmFileStream("am_hw3.ppm", std::ios::out | std::ios::binary);
+    std::ofstream ppmFileStream("am_hw3_edited.ppm", std::ios::out | std::ios::binary);
     ppmFileStream << "P3\n";
     ppmFileStream << imageWidth << " " << imageHeight << "\n";
     ppmFileStream << maxColorComponent << "\n";
+
+    float aspectRatio = (float)imageWidth / imageHeight;
 
     //Draw
     for (int rowIdx = 0; rowIdx < imageHeight; ++rowIdx) {
@@ -58,10 +68,11 @@ int main() {
             //Calculate screen-space coordinates
             x = (2.0 * x) - 1.0;
             y = 1.0 - (2.0 * y);
-            x *= (float)imageWidth / imageHeight;
+            x *= aspectRatio;
 
             //Extract normalized ray through pixel
-            Vector3D ray = Vector3D(x, y, -1.0).getNormalized();
+            Vector3D ray = Vector3D(x, y, -1.0);
+            ray.normalize();
 
             //Convert to RGB, treating each coordinate as a color coefficient and taking the abs() when negative
             //We transform the coordinate range from [-1;1] to [0;1] because we need positive colour coefficients.
