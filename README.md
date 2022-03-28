@@ -12,3 +12,9 @@ Homework repository associated with the ChaosCamp Ray Tracing course.
  - Problem 1: Add a triangle representation to a previous homework project.
  - Problem 2: Cross product
  - Problem 3: Find normal vector and area of a triangle
+
+### Homework 5 - Ray-Triangle intersection
+ - Problem 1: Render a triangle (given)
+ - Problem 2: Render a triangle by choice
+ - Problem 3: Render a scene of two triangles
+ - Problem 4: Create a complex scene composed of triangles - we create a "beehive" of triangles which - when appropriately coloured - effectively simulates a composition of 3D cubes.
