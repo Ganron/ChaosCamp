@@ -18,3 +18,10 @@ Homework repository associated with the ChaosCamp Ray Tracing course.
  - Problem 2: Render a triangle by choice
  - Problem 3: Render a scene of two triangles
  - Problem 4: Create a complex scene composed of triangles - we create a "beehive" of triangles which - when appropriately coloured - effectively simulates a composition of 3D cubes.
+
+### Homework 6 - Camera movement
+ - Problem 1: Implement camera pan of the forward vector.
+ - Problem 2: Generate a picture of the given triangle with arbitrary camera position and orientation.
+ - Problem 3: Implement some more diverse camera movements (dolly, truck, pedestal, etc.)
+ - Problem 4: Generate a picture where the camera has gone through a composite transformation.
+ - Problem 5: Generate a short animation (succession of frames).
