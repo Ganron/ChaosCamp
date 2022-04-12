@@ -20,11 +20,12 @@ namespace ChaosCampAM {
     triIndexList.push_back(tri);
   }
 
-  float Mesh::intersect(const Ray& ray, Vector3& intersection) const {
+  float Mesh::intersect(const Ray& ray, Vector3& intersection, int& triIndex) const {
     //For each triangle index tuple, construct an actual triangle object and test for intersection
     float closestDist = FLT_MAX;
     Vector3 closestIntersect;
 
+    int index = 0;
     for (TriProxy tri : triIndexList) {
       //ensure valid indices
       int vertexCount = vertexList.size();
@@ -38,7 +39,9 @@ namespace ChaosCampAM {
       if (dist > 0.0 && dist < closestDist) {
         closestDist = dist;
         intersection = closestIntersect;
+        triIndex = index;
       }
+      index++;
     }
 
     if (closestDist < FLT_MAX) {
@@ -50,5 +53,9 @@ namespace ChaosCampAM {
     }
 
     return 0.0f;
+  }
+
+  int Mesh::getNumTriangles() const {
+    return triIndexList.size();
   }
 }

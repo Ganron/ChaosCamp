@@ -43,7 +43,10 @@ namespace ChaosCampAM {
     // - Returns the distance from the ray origin to the closest intersection point if such exists. Modifies 'intersection'
     // to store the intersection point.
     // - Returns -1.0 (negative value) otherwise.
-    float intersect(const Ray& ray, Vector3& intersection) const;
+    //TODO: return more useful shading info instead of tri index
+    float intersect(const Ray& ray, Vector3& intersection, int& triIndex) const;
+
+    int getNumTriangles() const;
 
   private:
     std::vector<Vector3> vertexList;

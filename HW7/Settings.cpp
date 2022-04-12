@@ -6,10 +6,6 @@ namespace ChaosCampAM {
 		return bgColor;
 	}
 
-	const ColorRGB& Settings::getTriColor() const {
-		return triColor;
-	}
-
 	int Settings::getWidth() const {
 		return imgWidth;
 	}
@@ -24,10 +20,6 @@ namespace ChaosCampAM {
 
 	void Settings::setBgColor(const ColorRGB& newBgColor)	{
 		bgColor = newBgColor;
-	}
-
-	void Settings::setTriColor(const ColorRGB& newTriColor)	{
-		triColor = newTriColor;
 	}
 
 	void Settings::setWidth(int newWidth)	{

@@ -89,19 +89,21 @@ namespace ChaosCampAM {
   void Scene::parseObjects(const rapidjson::Document& doc) {
     const rapidjson::Value& objVal = doc.FindMember("objects")->value;
     if (!objVal.IsNull() && objVal.IsArray()) {
-      //Extract vertices
-      const rapidjson::Value& verticesVal = objVal[0].FindMember("vertices")->value;
-      assert(!verticesVal.IsNull() && verticesVal.IsArray());
-      std::vector<Vector3> vertices;
-      loadVertices(verticesVal.GetArray(), vertices);
-      
-      //Extract triangles
-      const rapidjson::Value& trianglesVal = objVal[0].FindMember("triangles")->value;
-      assert(!trianglesVal.IsNull() && trianglesVal.IsArray());
-      std::vector<TriProxy> triangles;
-      loadTriangles(trianglesVal.GetArray(), triangles);
+      for (int i = 0; i < objVal.Size(); i++) { //For each mesh
+        //Extract vertices
+        const rapidjson::Value& verticesVal = objVal[i].FindMember("vertices")->value;
+        assert(!verticesVal.IsNull() && verticesVal.IsArray());
+        std::vector<Vector3> vertices;
+        loadVertices(verticesVal.GetArray(), vertices);
 
-      meshes.emplace_back(vertices, triangles); // Scene contains a single mesh for the time being
+        //Extract triangles
+        const rapidjson::Value& trianglesVal = objVal[i].FindMember("triangles")->value;
+        assert(!trianglesVal.IsNull() && trianglesVal.IsArray());
+        std::vector<TriProxy> triangles;
+        loadTriangles(trianglesVal.GetArray(), triangles);
+
+        meshes.emplace_back(vertices, triangles);
+      }
     }
   }
 

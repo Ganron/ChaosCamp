@@ -5,6 +5,16 @@
 #include"Mesh.h"
 #include<assert.h>
 
+//Used for const shading
+ColorRGB colors[6] = {
+  {251, 255, 224},
+  {213, 230, 85},
+  {18, 45, 48},
+  {39, 219, 135},
+  {204, 234, 237},
+  {84, 91, 92}
+};
+
 void ChaosCampAM::Renderer::render(const Scene& scene, const std::string& filename) {
   //Initial getters
   const Settings& settings = scene.getSettings();
@@ -28,11 +38,12 @@ void ChaosCampAM::Renderer::render(const Scene& scene, const std::string& filena
 
       //intersect
       Vector3 intersection;
-      float dist = findIntersection(ray, meshes, intersection);
+      int triIndex=0;
+      float dist = findIntersection(ray, meshes, intersection,triIndex);
 
       if (dist > 0.0f) {
-        //intersection occured - colour pixel in triangle colour
-        ColorRGB triColor = settings.getTriColor();
+        //intersection occured - colour pixel based on index
+        ColorRGB triColor = colors[triIndex % 6];
         ppmFileStream << (int)triColor.r << " " << (int)triColor.g << " " << (int)triColor.b << "\t";
       }
       else {
@@ -48,7 +59,8 @@ void ChaosCampAM::Renderer::render(const Scene& scene, const std::string& filena
   ppmFileStream.close();
 }
 
-float ChaosCampAM::Renderer::findIntersection(const Ray& ray, const std::vector<Mesh>& meshes, Vector3& intersection) {
+float ChaosCampAM::Renderer::findIntersection(const Ray& ray, const std::vector<Mesh>& meshes, 
+  Vector3& intersection, int& triIndex) {
   //Closest intersection among all meshes
   float closestDist = FLT_MAX;
   Vector3 closestIntersect;
@@ -56,7 +68,7 @@ float ChaosCampAM::Renderer::findIntersection(const Ray& ray, const std::vector<
   //Loop through all meshes and find closest intersection
   Vector3 intersect;
   for (const Mesh& mesh : meshes) {
-    float dist = mesh.intersect(ray, intersect);
+    float dist = mesh.intersect(ray, intersect,triIndex);
     if (dist > 0.0f && dist < closestDist) {
       closestDist = dist;
       closestIntersect = intersect;

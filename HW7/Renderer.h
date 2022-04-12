@@ -26,6 +26,7 @@ namespace ChaosCampAM {
     //Find the closest intersection point (if any) of a ray with a collection of meshes.
     // - Returns distance to closest intersection. Intersection point stored in 'intersection'.
     // - If no intersection found, returns -1.0.
-    float findIntersection(const Ray& ray, const std::vector<Mesh>& meshes, Vector3& intersection);
+    //TODO: Exchange triIndex with more useful shading information
+    float findIntersection(const Ray& ray, const std::vector<Mesh>& meshes, Vector3& intersection, int& triIndex);
   };
 }
