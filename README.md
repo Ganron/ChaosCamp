@@ -25,3 +25,6 @@ Homework repository associated with the ChaosCamp Ray Tracing course.
  - Problem 3: Implement some more diverse camera movements (dolly, truck, pedestal, etc.)
  - Problem 4: Generate a picture where the camera has gone through a composite transformation.
  - Problem 5: Generate a short animation (succession of frames).
+
+### Homework 7 - Scene file import
+ - Problems 1 - 5: Render a scene from the given file.
