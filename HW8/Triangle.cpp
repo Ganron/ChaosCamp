@@ -2,6 +2,7 @@
 #include "Ray.h"
 #include "Math/MathUtil.h"
 #include <assert.h>
+#include <math.h>
 
 namespace ChaosCampAM {
   Triangle::Triangle(const Vector3& v0, const Vector3& v1, const Vector3& v2) : vert{ v0,v1,v2 } {
@@ -50,36 +51,34 @@ namespace ChaosCampAM {
     //p - coefficient used when calculating the determinant, but also used later!
     Vector3 dir = ray.getDirection();
     Vector3 p = dir.cross(e1);
+
+    //If det is negative, then triangle is back-facing- ALLOW THIS CASE, i.e. no back-face culling
     float det = e0.dot(p);
 
     //If det is 0, then ray direction is parallel to triangle plane
-    //If det is negative, then triangle is back-facing
-    if (det < EPSILON) {
+    if (det > -EPSILON && det < EPSILON) {
       return -1.0;
     }
+    float invDet = 1 / det;
 
     //t - distance from vertex 0 to ray origin
     Vector3 t = ray.getOrigin() - vert[0];
 
     //The 'U' barycentric coordinate - the one associated with v1 (yet unnormalised) 
-    float uCoord = t.dot(p);
-    if (uCoord<0.0 || uCoord > det) {
+    float uCoord = t.dot(p)*invDet;
+    if (uCoord<0.0f || uCoord > 1.0f) {
       return -1.0;
     }
 
     //The 'V' barycentric coordinate - the one associated with v2 (yet unnormalised)
     Vector3 q = t.cross(e0);
-    float vCoord = dir.dot(q);
-    if (vCoord<0.0 || uCoord + vCoord > det) {
+    float vCoord = dir.dot(q)*invDet;
+    if (vCoord<0.0f || uCoord + vCoord > 1.0f) {
       return -1.0;
     }
 
     //Calculate distance (along the ray) to the intersection point and calculate intersection itself.
-    float dist = e1.dot(q);
-    float invDet = 1 / det;
-    dist *= invDet;
-    uCoord *= invDet;
-    vCoord *= invDet;
+    float dist = e1.dot(q)*invDet;
 
     if (dist < -EPSILON) return -1.0;
     intersection = ray.getPointOnRay(dist);
