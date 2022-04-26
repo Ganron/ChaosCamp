@@ -1,0 +1,56 @@
+#pragma once
+#include<vector>
+#include "Math/Vector3.h"
+
+namespace ChaosCampAM {
+
+  //Forward-delcare
+  class Ray;
+
+  //A 3-tuple of vertex indices.
+  //Used instead of a Triangle in the mesh class to avoid duplicated vertices. 
+  struct TriProxy {
+    int v0;
+    int v1;
+    int v2;
+    TriProxy(int vert0, int vert1, int vert2) :v0(vert0), v1(vert1), v2(vert2) {}
+  };
+
+  /*
+  * A geometry mesh, composed of triangles.
+  */
+  class Mesh {
+  public:
+    //Construct an empty mesh.
+    //Use 'vertexHint' and 'triangleHint' to reserve memory at construction time.
+    // - 'vertexHint' = number of vertices to reserve.
+    // - 'triangleHint' = number of triangle index tuples to reserve.
+    Mesh(int vertexHint = 100, int triangleHint = 100);
+
+    //Construct a mesh.
+    // - 'vertices' must specify the list of vertices in the mesh.
+    // - 'triangles' must specifiy the list of triangles (each triangle is given as a tuple of indices in the vertex list)
+    // in the mesh.
+    Mesh(const std::vector<Vector3>& vertices, const std::vector<TriProxy>& triangles);
+
+    //Add a vertex to the mesh.
+    void pushVertex(const Vector3& vert);
+
+    //Add a triangle to the mesh. For memory optimisation purposes, the triangle is given as a 3-tuple of vertex indices.
+    void pushTriangle(const TriProxy& tri);
+
+    //Intersect a ray with the given mesh. 
+    // - Returns the distance from the ray origin to the closest intersection point if such exists. Modifies 'intersection'
+    // to store the intersection point.
+    // - Returns -1.0 (negative value) otherwise.
+    float intersect(const Ray& ray, Vector3& intersection, Vector3& triNormal) const;
+
+    int getNumTriangles() const;
+
+  private:
+    std::vector<Vector3> vertexList;
+    std::vector<TriProxy> triIndexList;
+
+  };
+
+}
