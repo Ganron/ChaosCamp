@@ -28,3 +28,6 @@ Homework repository associated with the ChaosCamp Ray Tracing course.
 
 ### Homework 7 - Scene file import
  - Problems 1 - 5: Render a scene from the given file.
+
+### Homework 8 - Light
+ - Problems 1 - 4: Render a scene (with lighting) from the given files. Lambertian shading with multiple lights and shadow support.
