@@ -31,3 +31,8 @@ Homework repository associated with the ChaosCamp Ray Tracing course.
 
 ### Homework 8 - Light
  - Problems 1 - 4: Render a scene (with lighting) from the given files. Lambertian shading with multiple lights and shadow support.
+
+### Homeowrk 9 - Materials
+ - Problems 1 - 2: Render a scene where pixels are shaded based on barycentric coordinates.
+ - Problems 3 - 4: Render a scene containing diffuse materials.
+ - Problems 5 - 6: Render a scene containing reflective materials.
