@@ -48,9 +48,9 @@ int main() {
   //renderer.render(scene2, "output/scene1.ppm",ShadingMode::Barycentric);
 
   //Problem 3
-  //Scene scene3;
-  //parser.parse("input/scene2.crtscene", scene3);
-  //renderer.render(scene3, "output/scene2.ppm",ShadingMode::Light);
+  Scene scene3;
+  parser.parse("input/scene2.crtscene", scene3);
+  renderer.render(scene3, "output/scene2.ppm",ShadingMode::Light);
 
   //Problem 4
   //Scene scene4;
@@ -63,9 +63,9 @@ int main() {
   //renderer.render(scene5, "output/scene4.ppm", ShadingMode::Light);
 
   //Problem 6
-  Scene scene6;
-  parser.parse("input/scene5.crtscene", scene6);
-  renderer.render(scene6, "output/scene5.ppm", ShadingMode::Light);
+  //Scene scene6;
+  //parser.parse("input/scene5.crtscene", scene6);
+  //renderer.render(scene6, "output/scene5.ppm", ShadingMode::Light);
 
 
 

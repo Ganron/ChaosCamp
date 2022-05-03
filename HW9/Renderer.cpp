@@ -66,8 +66,8 @@ ChaosCampAM::Vector3 ChaosCampAM::Renderer::rayTrace(const Ray& ray, int depth, 
       Vector3 albedo = mat.albedo;
       
       Vector3 normal = mat.smoothShading ?
-        intersectInfo.triNormal : //if smooth shading is disabled, take triangle normal
-        extractHitNormal(meshes, intersectInfo, meshIndex, triIndex); //else calculate hit normal
+        extractHitNormal(meshes, intersectInfo, meshIndex, triIndex) : //if smooth shading is enabled, take hit normal
+        intersectInfo.triNormal; //else take triangle normal
       
       //in case of diffuse material, do lambertian shading
       if (mat.type == MaterialType::Diffuse) { 
